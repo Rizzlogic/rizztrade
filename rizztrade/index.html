@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RIZZTRADE · Pemantau Emas untuk Pemula</title>
+<meta name="description" content="Belajar membaca candlestick XAUUSD dengan penjelasan sederhana dan analisis AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{--bg:#f7f3ec;--cd:#fff;--c2:#fbf8f2;--bd:#e3dccf;--tx:#1b2233;--mu:#6a7384;--ac:#b07048;--ac2:#d29b72;--up:#0e8a62;--dn:#d2453d;--gr:#ece6da;--lv:#8a93a8;--gl:#fde9d8;--hl:#1b223310;color-scheme:light}
+[data-theme="dark"]{--bg:#0a1020;--cd:#141e35;--c2:#0f182b;--bd:#26324d;--tx:#f2eee6;--mu:#9ba6bd;--ac:#e3b79b;--ac2:#b98366;--up:#4cc9a0;--dn:#f0716b;--gr:#1a2540;--lv:#6b7ea6;--gl:#18264a;--hl:#ffffff14;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:radial-gradient(900px 500px at 85% -10%,var(--gl),transparent 60%),var(--bg);color:var(--tx);font:15px/1.65 'Manrope',system-ui,sans-serif;padding-bottom:env(safe-area-inset-bottom);transition:background .3s,color .3s}
+.w{max-width:1180px;margin:0 auto;padding:0 24px}
+header{position:sticky;top:0;z-index:5;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--bd);padding-top:env(safe-area-inset-top)}
+header .w{display:flex;align-items:center;justify-content:space-between;height:64px;gap:14px}
+.sr{font-family:'Cormorant Garamond',Georgia,serif}
+.logo{font:700 28px 'Cormorant Garamond',Georgia,serif;letter-spacing:.06em}.logo i{font-style:normal;color:var(--ac)}
+nav{display:flex;gap:28px;font-size:14px}nav a{color:var(--mu);text-decoration:none}nav a:hover{color:var(--ac)}
+.hr{display:flex;gap:10px;align-items:center}
+.pill{font-size:12px;border:1px solid var(--bd);border-radius:99px;padding:6px 14px;display:flex;gap:8px;align-items:center;background:var(--c2)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--dn)}.dot.on{background:var(--up)}
+button{font:inherit;color:var(--tx);cursor:pointer}
+.btn{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#1a1008;border:0;border-radius:12px;min-height:46px;padding:0 22px;font-size:14px;font-weight:700}
+.btn:disabled{opacity:.6}
+.chip{background:transparent;border:1px solid var(--bd);border-radius:99px;padding:0 16px;min-height:36px;font-size:13px;font-weight:700}
+.chip.on{background:var(--ac);border-color:var(--ac);color:#1a1008}
+.ic{width:40px;height:40px;border-radius:50%;border:1px solid var(--bd);background:var(--c2);font-size:16px}
+.top{padding:36px 0 0;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+h1{font:600 clamp(34px,5vw,48px)/1.05 'Cormorant Garamond',Georgia,serif;max-width:16ch}
+.steps{display:flex;gap:28px;flex-wrap:wrap}.st{display:flex;gap:12px;align-items:center}.st b{font:600 30px/1 'Cormorant Garamond',serif;color:var(--ac)}.st div{font-size:14px;font-weight:700}.st span{display:block;font-size:12px;font-weight:400;color:var(--mu)}
+.grid{display:grid;grid-template-columns:1fr 360px;gap:24px;padding:28px 0 20px}
+.card{background:linear-gradient(180deg,var(--cd),var(--c2));border:1px solid var(--bd);border-radius:20px;padding:24px;box-shadow:0 24px 50px -34px #0006}
+.col{display:flex;flex-direction:column;gap:24px}
+.bar{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.price{font:600 46px/1 'Cormorant Garamond',serif;color:var(--ac)}.mu{color:var(--mu)}.up{color:var(--up)}.dn{color:var(--dn)}
+.tf{display:flex;gap:6px;flex-wrap:wrap}
+canvas{width:100%;height:340px;display:block;cursor:crosshair;touch-action:pan-y}
+.leg{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:12px}.leg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--c);margin-right:7px}
+.info{border-top:1px solid var(--bd);margin-top:14px;padding-top:14px;min-height:96px}.info b{font:600 22px 'Cormorant Garamond',serif;display:block}.ohlc{font-size:13px;color:var(--mu);margin:2px 0 4px}
+h2{font:600 clamp(28px,4vw,38px)/1.15 'Cormorant Garamond',serif}
+h3{font:600 24px 'Cormorant Garamond',serif}
+.row{display:flex;justify-content:space-between;font-size:14px;padding:9px 0;border-bottom:1px solid var(--bd)}.row span{color:var(--mu)}
+.big{font:700 46px/1 'Cormorant Garamond',serif}
+.meter{height:8px;border-radius:99px;background:var(--gr);margin:10px 0 12px}.meter i{display:block;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--ac2),var(--up));width:62%}
+.tag{font-size:11px;color:var(--mu);border:1px solid var(--bd);border-radius:99px;padding:3px 10px}
+.note{font-size:12px;color:var(--mu);line-height:1.55;margin-top:10px}
+label{display:block;font-size:12px;color:var(--mu);margin:10px 0 4px}
+input,textarea{width:100%;background:var(--c2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;color:var(--tx);font:inherit}
+input:focus,textarea:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+section{padding:44px 0}
+.g4{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:22px}
+.g4 .card{padding:20px}.g4 p{color:var(--mu);font-size:14px;margin-top:4px}
+dialog{background:var(--cd);color:var(--tx);border:1px solid var(--bd);border-radius:20px;padding:24px;width:min(440px,92vw)}dialog::backdrop{background:#0008}select{width:100%;background:var(--c2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;color:var(--tx);font:inherit}
+footer{border-top:1px solid var(--bd);padding:28px 0 40px;color:var(--mu);font-size:13px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}nav{display:none}canvas{height:280px}.price{font-size:38px}.card{padding:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body{transition:none}}
+</style>
+</head>
+<body>
+<header><div class="w"><div class="logo">RIZZ<i>TRADE</i></div>
+<nav><a href="#chart">Grafik</a><a href="#belajar">Belajar candle</a><a href="#weekend">Akhir pekan</a></nav>
+<div class="hr"><div class="pill"><span class="dot" id="dot"></span><span id="mk">…</span></div><button class="ic" id="gs" aria-label="Pengaturan">⚙</button><button class="ic" id="th" aria-label="Ganti tema terang atau gelap">◐</button></div></div></header>
+
+<main class="w">
+<div class="top"><h1>Baca pasar emas dengan tenang.</h1>
+<div class="steps"><div class="st"><b>1</b><div>Lihat candle<span>Hijau naik, merah turun</span></div></div><div class="st"><b>2</b><div>Tentukan level<span>Support dan resistance</span></div></div><div class="st"><b>3</b><div>Hitung risiko<span>Lot sesuai modal</span></div></div></div></div>
+
+<div class="grid" id="chart">
+  <div class="card">
+    <div class="bar"><div><div class="mu" style="font-size:13px">XAUUSD · <span id="src">data contoh untuk belajar</span></div><div class="price" id="pr">–</div><div id="ch" style="font-size:14px;margin-top:4px"></div></div>
+    <div class="tf" id="tf"><button class="chip" data-n="M15">M15</button><button class="chip on" data-n="H1">H1</button><button class="chip" data-n="H4">H4</button><button class="chip" data-n="D1">D1</button></div></div>
+    <canvas id="cv" aria-label="Grafik candlestick XAUUSD"></canvas>
+    <div class="leg"><span style="--c:var(--up)">Hijau: harga naik</span><span style="--c:var(--dn)">Merah: harga turun</span><span style="--c:var(--ac)">Garis emas: rata-rata 20 candle</span><span style="--c:var(--lv)">Putus-putus: support dan resistance</span></div>
+    <div class="info" id="info"></div>
+    <details style="margin-top:12px"><summary class="mu" style="cursor:pointer;font-size:13px">Pakai data sendiri (open,high,low,close per baris)</summary>
+      <textarea id="csv" rows="3" placeholder="4170,4182,4165,4178" style="margin-top:8px"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px"><button class="chip" id="cb">Tampilkan</button><button class="chip" id="cr">Data contoh</button></div></details>
+  </div>
+  <div class="col">
+    <div class="card" id="ai"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Analisis Claude</h3><span class="tag" id="at">Contoh hasil</span></div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-top:10px"><span class="big up" id="ab2">Naik</span><span class="mu" style="font-size:13px" id="ak">keyakinan 62%</span></div>
+      <div class="meter"><i id="am"></i></div>
+      <div class="row"><span>Zona entry</span><b id="ae">4,160 – 4,168</b></div><div class="row"><span>Stop loss</span><b class="dn" id="as">4,148</b></div><div class="row"><span>Take profit</span><b class="up" id="atp">4,205</b></div>
+      <div style="font-size:13px;line-height:1.65;margin:12px 0" id="aw">Kenapa naik? Harga bertahan di atas rata-rata 20 candle dan support masih jauh di bawah. Waspada: resistance 4,205 bisa menahan kenaikan.</div>
+      <button class="btn" id="ab" style="width:100%">Analisis grafik ini</button>
+      <div class="note">Perkiraan berdasarkan pola candle, bukan kepastian. Selalu pasang stop loss.</div></div>
+    <div class="card"><h3>Hitung lot yang aman</h3>
+      <div class="f2"><div><label for="kb">Modal ($)</label><input id="kb" type="number" value="5000"></div><div><label for="kr">Risiko (%)</label><input id="kr" type="number" value="1" step="0.1"></div>
+      <div><label for="ke">Entry</label><input id="ke" type="number" step="0.01" value="4164"></div><div><label for="ks">Stop loss</label><input id="ks" type="number" step="0.01" value="4148"></div></div>
+      <div id="ko" style="margin-top:8px"></div><div class="note">Asumsi 1 lot = 100 oz ($1 gerak = $100 per lot). Untuk posisi Buy.</div></div>
+  </div>
+</div>
+
+<section id="belajar"><h2>Cara membaca satu candle</h2>
+  <div class="g4"><div class="card"><h3>Badan dan ekor</h3><p>Badan: jarak buka ke tutup. Ekor: rentang harga tertinggi dan terendah yang sempat disentuh.</p></div>
+  <div class="card"><h3>Doji</h3><p>Badan nyaris tidak ada. Pembeli dan penjual seimbang, pasar sedang ragu.</p></div>
+  <div class="card"><h3>Hammer</h3><p>Ekor bawah panjang. Harga sempat jatuh lalu dibeli kembali.</p></div>
+  <div class="card"><h3>Support dan resistance</h3><p>Support: harga sering memantul naik. Resistance: harga sering tertahan turun.</p></div></div></section>
+
+<section id="weekend"><h2>Sabtu dan Minggu, pasar tutup</h2><p class="mu" id="wk" style="margin-top:6px"></p>
+  <div class="g4"><div class="card"><h3>Review mingguan</h3><textarea id="wr" rows="4" placeholder="Apa yang berhasil? Kesalahan apa yang berulang?" style="margin-top:10px"></textarea></div>
+  <div class="card"><h3>Latihan baca candle</h3><p>Ganti timeframe, tebak arah, lalu cocokkan dengan penjelasan candle.</p></div>
+  <div class="card"><h3>Persiapan minggu depan</h3><p>Catat level kunci, batas risiko harian, dan satu aturan yang tidak boleh dilanggar.</p></div></div></section>
+</main>
+<footer><div class="w">RIZZTRADE adalah alat belajar, bukan nasihat keuangan. Trading emas berisiko tinggi dan bisa merugikan modal Anda. Grafik memakai data contoh kecuali Anda memasukkan data sendiri.</div></footer>
+
+<dialog id="dlg"><h3>Pengaturan</h3>
+<label for="sLv">Level support/resistance (pisahkan dengan koma)</label><input id="sLv" type="text">
+<div class="f2"><div><label for="sB">Modal awal ($)</label><input id="sB" type="number"></div><div><label for="sR">Risiko awal (%)</label><input id="sR" type="number" step="0.1"></div>
+<div><label for="sT">Timeframe awal</label><select id="sT"><option>M15</option><option>H1</option><option>H4</option><option>D1</option></select></div><div><label for="sTh">Tema</label><select id="sTh"><option value="">Ikuti perangkat</option><option value="light">Terang</option><option value="dark">Gelap</option></select></div></div>
+<div style="display:flex;gap:8px;margin-top:18px"><button class="btn" id="sv">Simpan</button><button class="chip" id="sx">Reset</button><button class="chip" id="sc">Tutup</button></div>
+<div class="note">Pengaturan tersimpan di browser perangkat ini saja.</div></dialog>
+<script>
+const $=i=>document.getElementById(i),cv=$("cv"),cx=cv.getContext("2d"),f=(n,d=2)=>Number(n).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const LV=[4315,4205,4065,3970],TF={M15:[3,11],H1:[7,31],H4:[13,64],D1:[21,125]};
+const V=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+/* tema */
+const root=document.documentElement;let th;try{th=localStorage.getItem("rz_th")}catch(e){}
+root.dataset.theme=th||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+$("th").onclick=()=>{const n=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=n;try{localStorage.setItem("rz_th",n)}catch(e){}draw()};
+/* pengaturan (tersimpan di browser) */
+const DEF={lv:[4315,4205,4065,3970],b:5000,r:1,tf:"H1",th:""};let SET=Object.assign({},DEF);
+try{SET=Object.assign(SET,JSON.parse(localStorage.getItem("rz_set")||"{}"))}catch(e){}
+function applySet(){LV.length=0;LV.push(...SET.lv);$("kb").value=SET.b;$("kr").value=SET.r;cur=SET.tf;document.querySelectorAll("#tf button").forEach(b=>b.classList.toggle("on",b.dataset.n===cur));
+  root.dataset.theme=SET.th||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light")}
+$("gs").onclick=()=>{$("sLv").value=SET.lv.join(", ");$("sB").value=SET.b;$("sR").value=SET.r;$("sT").value=SET.tf;$("sTh").value=SET.th;$("dlg").showModal()};
+$("sc").onclick=()=>$("dlg").close();
+$("sv").onclick=()=>{const lv=$("sLv").value.split(",").map(Number).filter(v=>v>0&&isFinite(v));if(!lv.length){alert("Isi minimal satu level harga, mis. 4205, 4065");return}
+  SET={lv,b:+$("sB").value||5000,r:+$("sR").value||1,tf:$("sT").value,th:$("sTh").value};try{localStorage.setItem("rz_set",JSON.stringify(SET))}catch(e){}
+  applySet();kalk();if(!own)setData(demo(cur));else draw();$("dlg").close()};
+$("sx").onclick=()=>{SET=Object.assign({},DEF);try{localStorage.removeItem("rz_set")}catch(e){}applySet();kalk();if(!own)setData(demo(cur));else draw();$("dlg").close()};
+/* data */
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function demo(n){const [s,v]=TF[n],r=rng(s*977),a=[];let p=4178-(r()-.4)*60;for(let i=0;i<60;i++){const o=p,c=o+(r()-.5)*v*2.2;a.push({o,h:Math.max(o,c)+r()*v*.8,l:Math.min(o,c)-r()*v*.8,c});p=c}const k=4178-a[59].c;return a.map(x=>({o:x.o+k,h:x.h+k,l:x.l+k,c:x.c+k}))}
+let D=[],cur="H1",hi=-1,own=false;
+function setData(a){D=a;hi=-1;draw();head();info(D.length-1,true)}
+function head(){const l=D[D.length-1],d=l.c-D[0].o;$("pr").textContent=f(l.c);$("ch").textContent=(d>=0?"▲ +":"▼ ")+f(d)+" dalam "+D.length+" candle";$("ch").className=d>=0?"up":"dn"}
+function sma(i,n=20){if(i<n-1)return null;let s=0;for(let k=i-n+1;k<=i;k++)s+=D[k].c;return s/n}
+function draw(){if(!D.length)return;const dpr=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
+  const up=V("--up"),dn=V("--dn"),ac=V("--ac"),gr=V("--gr"),lv=V("--lv"),mu=V("--mu");
+  const pl=8,pr=62,pt=10,pb=22,w=W-pl-pr,h=H-pt-pb;let mx=Math.max(...D.map(x=>x.h)),mn=Math.min(...D.map(x=>x.l));const pad=(mx-mn)*.08;mx+=pad;mn-=pad;
+  const Y=v=>pt+(mx-v)/(mx-mn)*h,st=w/D.length;cv._m={pl,st};cx.font="11px Manrope,sans-serif";cx.textBaseline="middle";
+  for(let i=0;i<=5;i++){const v=mn+(mx-mn)*i/5,y=Y(v);cx.strokeStyle=gr;cx.beginPath();cx.moveTo(pl,y);cx.lineTo(W-pr,y);cx.stroke();cx.fillStyle=mu;cx.fillText(f(v,0),W-pr+8,y)}
+  LV.forEach(v=>{if(v>mn&&v<mx){const y=Y(v);cx.strokeStyle=lv;cx.setLineDash([6,5]);cx.beginPath();cx.moveTo(pl,y);cx.lineTo(W-pr,y);cx.stroke();cx.setLineDash([]);cx.fillStyle=mu;cx.fillText(v>D[D.length-1].c?"Resistance":"Support",pl+4,y-8)}});
+  D.forEach((x,i)=>{const px=pl+st*(i+.5),u=x.c>=x.o,col=u?up:dn,bw=Math.max(2,st*.62);if(i===hi){cx.fillStyle=V("--hl");cx.fillRect(pl+st*i,pt,st,h)}
+    cx.strokeStyle=col;cx.fillStyle=col;cx.lineWidth=1.4;cx.beginPath();cx.moveTo(px,Y(x.h));cx.lineTo(px,Y(x.l));cx.stroke();const t=Y(Math.max(x.o,x.c)),b=Y(Math.min(x.o,x.c));cx.fillRect(px-bw/2,t,bw,Math.max(1.5,b-t))});
+  cx.strokeStyle=ac;cx.lineWidth=1.8;cx.beginPath();let s=0;D.forEach((x,i)=>{const m=sma(i);if(m==null)return;const px=pl+st*(i+.5);s?cx.lineTo(px,Y(m)):cx.moveTo(px,Y(m));s=1});cx.stroke();
+  const l=D[D.length-1],y=Y(l.c);cx.fillStyle=ac;cx.fillRect(W-pr+2,y-9,pr-4,18);cx.fillStyle="#1a1008";cx.fillText(f(l.c),W-pr+6,y)}
+function info(i,quiet){const x=D[i];if(!x)return;const u=x.c>=x.o,body=Math.abs(x.c-x.o),rg=x.h-x.l||1e-9,uw=x.h-Math.max(x.o,x.c),lw=Math.min(x.o,x.c)-x.l;
+  let t=u?`Candle hijau: pembeli menang, harga naik $${f(body)} dari pembukaan.`:`Candle merah: penjual menang, harga turun $${f(body)} dari pembukaan.`;
+  if(body<rg*.1)t+=" Badannya sangat kecil (mirip doji): pasar ragu.";else if(lw>body*2&&uw<body)t+=" Ekor bawah panjang (mirip hammer): harga sempat jatuh lalu dibeli kembali.";else if(uw>body*2&&lw<body)t+=" Ekor atas panjang: harga sempat naik tapi ditolak penjual.";else if(body>rg*.65)t+=" Badan besar: dorongan satu arah yang kuat.";
+  const m=sma(i);if(m)t+=` Harga ${x.c>m?"di atas":"di bawah"} rata-rata 20 candle, tren jangka pendek ${x.c>m?"cenderung naik":"cenderung turun"}.`;
+  $("info").innerHTML=`<b>${quiet?"Candle terakhir":"Candle nomor "+(i+1)}</b><div class="ohlc">Buka ${f(x.o)} · Tertinggi ${f(x.h)} · Terendah ${f(x.l)} · Tutup ${f(x.c)}</div><div>${t}</div>`}
+function pos(e){const r=cv.getBoundingClientRect(),m=cv._m,i=Math.floor((e.clientX-r.left-m.pl)/m.st);return i>=0&&i<D.length?i:-1}
+cv.addEventListener("pointermove",e=>{const i=pos(e);if(i>=0&&i!==hi){hi=i;draw();info(i)}});cv.addEventListener("pointerleave",()=>{hi=-1;draw();info(D.length-1,true)});addEventListener("resize",draw);
+$("tf").onclick=e=>{const n=e.target.dataset.n;if(!n)return;cur=n;document.querySelectorAll("#tf button").forEach(b=>b.classList.toggle("on",b.dataset.n===n));if(!own)setData(demo(n))};
+$("cb").onclick=()=>{const a=$("csv").value.trim().split(/\n/).map(l=>l.split(",").map(Number)).filter(r=>r.length>=4&&r.every(isFinite)).map(([o,h,l,c])=>({o,h,l,c}));if(a.length<5){alert("Isi minimal 5 baris: open,high,low,close");return}own=true;$("src").textContent="data Anda";setData(a)};
+$("cr").onclick=()=>{own=false;$("src").textContent="data contoh untuk belajar";setData(demo(cur))};
+/* kalkulator */
+function kalk(){const B=+$("kb").value,R=+$("kr").value,E=+$("ke").value,S=+$("ks").value,o=$("ko"),sd=E-S;
+  if(!(E&&S)||sd<=0){o.innerHTML='<div class="note">Untuk Buy, stop loss harus di bawah entry.</div>';return}
+  const risk=B*R/100,lot=risk/(sd*100);o.innerHTML=`<div class="row"><span>Risiko maksimal</span><b>$${f(risk)}</b></div><div class="row"><span>Jarak stop loss</span><b>$${f(sd)}</b></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:10px"><span class="mu">Lot disarankan</span><b class="big" style="font-size:34px;color:var(--ac)">${f(lot)}</b></div>`}
+["kb","kr","ke","ks"].forEach(i=>$(i).oninput=kalk);kalk();
+/* AI */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("ab").onclick=async()=>{const b=$("ab");b.disabled=true;b.textContent="Menganalisis…";
+  try{const r=await fetch("/api/predict",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({tf:cur,candles:D.slice(-40).map(x=>[x.o,x.h,x.l,x.c].map(v=>+v.toFixed(2)))})});const d=await r.json();if(!r.ok)throw new Error(d.error||"gagal");
+    const k=Math.max(0,Math.min(75,+d.keyakinan||50)),n=d.bias==="NAIK",t=d.bias==="TURUN";$("ab2").textContent=n?"Naik":t?"Turun":"Sideways";$("ab2").className="big "+(n?"up":t?"dn":"");
+    $("ak").textContent="keyakinan "+k+"%";$("am").style.width=k+"%";$("ae").textContent=d.zona_entry;$("as").textContent=d.stop_loss;$("atp").textContent=d.take_profit;
+    $("aw").innerHTML=(d.alasan||[]).map(a=>"• "+esc(a)).join("<br>")+"<br><br>Risiko: "+esc(d.risiko);$("at").textContent="Hasil terbaru"}
+  catch(e){$("aw").textContent="Prediksi belum bisa dijalankan: "+e.message+". Pastikan ANTHROPIC_API_KEY sudah diatur di Vercel."}
+  b.disabled=false;b.textContent="Analisis ulang"};
+/* pasar & weekend */
+function mk(){const n=new Date(),m=n.getUTCDay()*1440+n.getUTCHours()*60+n.getUTCMinutes(),O=1320,C=8460,op=m>=O&&m<C,mins=op?C-m:(m>=C?10080-m+O:O-m),h=Math.floor(mins/60),t=h>=24?Math.floor(h/24)+" hari "+h%24+" jam":h+" jam "+mins%60+" menit";
+  $("mk").textContent=op?"Pasar buka · tutup "+t:"Pasar tutup · buka "+t;$("dot").className="dot"+(op?" on":"");
+  $("wk").textContent=op?"Emas tidak diperdagangkan di akhir pekan. Pakai waktunya untuk belajar dan evaluasi.":"Pasar sedang tutup. Waktu yang pas untuk review dan latihan. Jam buka bersifat perkiraan."}
+mk();setInterval(mk,30000);
+try{$("wr").value=localStorage.getItem("rz_wr")||"";$("wr").oninput=e=>localStorage.setItem("rz_wr",e.target.value)}catch(e){}
+applySet();kalk();setData(demo(cur));
+</script>
+</body>
+</html>
