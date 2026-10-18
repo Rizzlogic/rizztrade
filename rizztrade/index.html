@@ -15,14 +15,10 @@
 <div class="hr"><div class="pill"><span class="dot" id="dot"></span><span id="mk">…</span></div><button class="ic" id="gs" aria-label="Pengaturan">⚙</button><button class="ic" id="th" aria-label="Ganti tema terang atau gelap">◐</button></div></div></header>
 
 <main class="w">
-<div class="top"><h1>Belajar baca pasar emas, pelan-pelan.</h1>
-<div class="steps"><div class="st"><b>1</b><div>Lihat candle<span>Hijau naik, merah turun</span></div></div><div class="st"><b>2</b><div>Tentukan level<span>Support dan resistance</span></div></div><div class="st"><b>3</b><div>Hitung risiko<span>Lot sesuai modal</span></div></div></div></div>
-
-<a class="card ban" href="belajar.html"><div><b>Baru belajar trading?</b><span>Mulai dari 6 pelajaran singkat tanpa istilah rumit.</span></div><b class="go">Mulai belajar →</b></a>
 <div class="grid" id="chart">
   <div class="card">
     <div class="bar"><div><div class="mu" style="font-size:13px">XAUUSD · <span id="src">data contoh untuk belajar</span></div><div class="price" id="pr">–</div><div id="ch" style="font-size:14px;margin-top:4px"></div></div>
-    <div class="tf" id="tf"><a class="chip" id="fk" href="grafik.html">⛶ Fokus</a><button class="chip" data-n="M15">M15</button><button class="chip on" data-n="H1">H1</button><button class="chip" data-n="H4">H4</button><button class="chip" data-n="D1">D1</button></div></div>
+    <div class="tf" id="tf"><select id="nn" aria-label="Jumlah candle" style="width:auto;min-height:36px;padding:0 10px"><option value="40">40 candle</option><option value="60" selected>60 candle</option><option value="120">120 candle</option></select><a class="chip" id="fk" href="grafik.html">⛶ Fokus</a><button class="chip" data-n="M15">M15</button><button class="chip on" data-n="H1">H1</button><button class="chip" data-n="H4">H4</button><button class="chip" data-n="D1">D1</button></div></div>
     <canvas id="cv" aria-label="Grafik candlestick XAUUSD"></canvas>
     <div class="leg"><span style="--c:var(--up)">Hijau: harga naik</span><span style="--c:var(--dn)">Merah: harga turun</span><span style="--c:var(--ac)">Garis emas: rata-rata 20 candle</span><span style="--c:var(--lv)">Putus-putus: support dan resistance</span></div>
     <div class="info" id="info"></div>
@@ -45,6 +41,11 @@
   </div>
 </div>
 
+<section class="intro"><div class="top"><h1>Belajar baca pasar emas, pelan-pelan.</h1>
+<div class="steps"><div class="st"><b>1</b><div>Lihat candle<span>Hijau naik, merah turun</span></div></div><div class="st"><b>2</b><div>Tentukan level<span>Support dan resistance</span></div></div><div class="st"><b>3</b><div>Hitung risiko<span>Lot sesuai modal</span></div></div></div></div>
+
+<a class="card ban" href="belajar.html"><div><b>Baru belajar trading?</b><span>Mulai dari 6 pelajaran singkat tanpa istilah rumit.</span></div><b class="go">Mulai belajar →</b></a>
+</section>
 <section id="belajar"><h2>Cara membaca satu candle</h2>
   <div class="g4"><div class="card"><h3>Badan dan ekor</h3><p>Badan: jarak buka ke tutup. Ekor: rentang harga tertinggi dan terendah yang sempat disentuh.</p></div>
   <div class="card"><h3>Doji</h3><p>Badan nyaris tidak ada. Pembeli dan penjual seimbang, pasar sedang ragu.</p></div>
@@ -75,7 +76,7 @@ const DEF={lv:[4315,4205,4065,3970],b:5000,r:1,tf:"H1",th:""};let SET=Object.ass
 try{SET=Object.assign(SET,JSON.parse(localStorage.getItem("rz_set")||"{}"))}catch(e){}
 function applySet(){LV.length=0;LV.push(...SET.lv);$("kb").value=SET.b;$("kr").value=SET.r;cur=SET.tf;document.querySelectorAll("#tf button").forEach(b=>b.classList.toggle("on",b.dataset.n===cur));
   RZ.apply(SET.th)}
-$("gs").onclick=()=>{$("sLv").value=SET.lv.join(", ");$("sB").value=SET.b;$("sR").value=SET.r;$("sT").value=SET.tf;$("sTh").value=SET.th;$("dlg").showModal()};
+$("gs").onclick=()=>{$("dlg").removeAttribute("style");$("sLv").value=SET.lv.join(", ");$("sB").value=SET.b;$("sR").value=SET.r;$("sT").value=SET.tf;$("sTh").value=SET.th;$("dlg").showModal()};
 $("sc").onclick=()=>$("dlg").close();
 $("sv").onclick=()=>{const lv=$("sLv").value.split(",").map(Number).filter(v=>v>0&&isFinite(v));if(!lv.length){alert("Isi minimal satu level harga, mis. 4205, 4065");return}
   SET={lv,b:+$("sB").value||5000,r:+$("sR").value||1,tf:$("sT").value,th:$("sTh").value};try{localStorage.setItem("rz_set",JSON.stringify(SET))}catch(e){}
@@ -83,10 +84,10 @@ $("sv").onclick=()=>{const lv=$("sLv").value.split(",").map(Number).filter(v=>v>
 $("sx").onclick=()=>{SET=Object.assign({},DEF);try{localStorage.removeItem("rz_set");localStorage.removeItem("rz_th")}catch(e){}applySet();kalk();if(!own)loadLive(cur);else draw();$("dlg").close()};
 /* data */
 function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-function demo(n){const [s,v]=TF[n],r=rng(s*977),a=[];let p=4178-(r()-.4)*60;for(let i=0;i<60;i++){const o=p,c=o+(r()-.5)*v*2.2;a.push({o,h:Math.max(o,c)+r()*v*.8,l:Math.min(o,c)-r()*v*.8,c});p=c}const k=4178-a[59].c;return a.map(x=>({o:x.o+k,h:x.h+k,l:x.l+k,c:x.c+k}))}
-let D=[],cur="H1",hi=-1,own=false,live=false;
-function setData(a){D=a;hi=-1;draw();head();info(D.length-1,true)}
-function head(){const l=D[D.length-1],d=l.c-D[0].o;$("pr").textContent=f(l.c);$("ch").textContent=(d>=0?"▲ +":"▼ ")+f(d)+" dalam "+D.length+" candle";$("ch").className=d>=0?"up":"dn"}
+function demo(n){const [s,v]=TF[n],r=rng(s*977),a=[];let p=4178-(r()-.4)*60;for(let i=0;i<120;i++){const o=p,c=o+(r()-.5)*v*2.2;a.push({o,h:Math.max(o,c)+r()*v*.8,l:Math.min(o,c)-r()*v*.8,c});p=c}const k=4178-a[119].c;return a.map(x=>({o:x.o+k,h:x.h+k,l:x.l+k,c:x.c+k}))}
+let D=[],FULL=[],N=60,pp=0,cur="H1",hi=-1,own=false,live=false;
+function setData(a){FULL=a;D=a.slice(-N);hi=-1;draw();head();info(D.length-1,true)}
+function head(){const l=D[D.length-1],d=l.c-D[0].o;$("pr").textContent=f(l.c);if(pp&&l.c!==pp){const e=$("pr");e.classList.remove("fu","fd");void e.offsetWidth;e.classList.add(l.c>pp?"fu":"fd")}pp=l.c;$("ch").textContent=(d>=0?"▲ +":"▼ ")+f(d)+" dalam "+D.length+" candle";$("ch").className=d>=0?"up":"dn"}
 function sma(i,n=20){if(i<n-1)return null;let s=0;for(let k=i-n+1;k<=i;k++)s+=D[k].c;return s/n}
 function draw(){if(!D.length)return;const dpr=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
   const up=V("--up"),dn=V("--dn"),ac=V("--ac"),gr=V("--gr"),lv=V("--lv"),mu=V("--mu");
@@ -101,6 +102,7 @@ function draw(){if(!D.length)return;const dpr=devicePixelRatio||1,W=cv.clientWid
 function info(i,quiet){const x=D[i];if(!x)return;const u=x.c>=x.o,body=Math.abs(x.c-x.o),rg=x.h-x.l||1e-9,uw=x.h-Math.max(x.o,x.c),lw=Math.min(x.o,x.c)-x.l;
   let t=u?`Candle hijau: pembeli menang, harga naik $${f(body)} dari pembukaan.`:`Candle merah: penjual menang, harga turun $${f(body)} dari pembukaan.`;
   if(body<rg*.1)t+=" Badannya sangat kecil (mirip doji): pasar ragu.";else if(lw>body*2&&uw<body)t+=" Ekor bawah panjang (mirip hammer): harga sempat jatuh lalu dibeli kembali.";else if(uw>body*2&&lw<body)t+=" Ekor atas panjang: harga sempat naik tapi ditolak penjual.";else if(body>rg*.65)t+=" Badan besar: dorongan satu arah yang kuat.";
+  const pv=D[i-1];if(pv){const pb=Math.abs(pv.c-pv.o);if(x.c>x.o&&pv.c<pv.o&&x.c>=pv.o&&x.o<=pv.c&&body>pb)t+=" Pola bullish engulfing: badan hijau menelan badan merah sebelumnya, tenaga beli menguat.";else if(x.c<x.o&&pv.c>pv.o&&x.o>=pv.c&&x.c<=pv.o&&body>pb)t+=" Pola bearish engulfing: badan merah menelan badan hijau sebelumnya, tenaga jual menguat."}
   const m=sma(i);if(m)t+=` Harga ${x.c>m?"di atas":"di bawah"} rata-rata 20 candle, tren jangka pendek ${x.c>m?"cenderung naik":"cenderung turun"}.`;
   $("info").innerHTML=`<b>${quiet?"Candle terakhir":"Candle nomor "+(i+1)}</b><div class="ohlc">Buka ${f(x.o)} · Tertinggi ${f(x.h)} · Terendah ${f(x.l)} · Tutup ${f(x.c)}</div><div>${t}</div>`}
 function pos(e){const r=cv.getBoundingClientRect(),m=cv._m,i=Math.floor((e.clientX-r.left-m.pl)/m.st);return i>=0&&i<D.length?i:-1}
@@ -109,11 +111,13 @@ $("tf").onclick=e=>{const n=e.target.dataset.n;if(!n)return;cur=n;document.query
 $("cb").onclick=()=>{const a=$("csv").value.trim().split(/\n/).map(l=>l.split(",").map(Number)).filter(r=>r.length>=4&&r.every(isFinite)).map(([o,h,l,c])=>({o,h,l,c}));if(a.length<5){alert("Isi minimal 5 baris: open,high,low,close");return}own=true;live=false;$("src").textContent="data Anda";setData(a)};
 $("cr").onclick=()=>{own=false;loadLive(cur)};
 /* data live via /api/candles */
-async function loadLive(n){$("src").textContent="memuat data…";
+function rev(){cv.classList.remove("rv");void cv.offsetWidth;cv.classList.add("rv")}
+async function loadLive(n,q){$("src").textContent="memuat data…";
   try{const r=await fetch("/api/candles?tf="+n),d=await r.json();if(!r.ok||!Array.isArray(d.candles))throw new Error(d.error||"gagal");
-    live=true;$("src").textContent="data live "+n+" · candle terakhir "+d.last+" · "+d.source;setData(d.candles)}
-  catch(e){live=false;$("src").textContent="data contoh (live belum aktif)";setData(demo(n))}}
-setInterval(()=>{if(!own&&live&&!document.hidden)loadLive(cur)},300000);
+    live=true;$("src").textContent="data live "+n+" · candle terakhir "+d.last+" · "+d.source;setData(d.candles);if(!q)rev()}
+  catch(e){live=false;$("src").textContent="data contoh (live belum aktif)";setData(demo(n));if(!q)rev()}}
+setInterval(()=>{if(!own&&live&&!document.hidden)loadLive(cur,true)},300000);
+$("nn").onchange=e=>{N=+e.target.value;setData(FULL)};
 $("fk").onclick=e=>{e.currentTarget.href="grafik.html?tf="+cur};
 /* kalkulator */
 function kalk(){const B=+$("kb").value,R=+$("kr").value,E=+$("ke").value,S=+$("ks").value,o=$("ko"),sd=E-S;
@@ -135,6 +139,9 @@ function mk(){const n=new Date(),m=n.getUTCDay()*1440+n.getUTCHours()*60+n.getUT
   $("wk").textContent=op?"Emas tidak diperdagangkan di akhir pekan. Pakai waktunya untuk belajar dan evaluasi.":"Pasar sedang tutup. Waktu yang pas untuk review dan latihan. Jam buka bersifat perkiraan."}
 mk();setInterval(mk,30000);
 try{$("wr").value=localStorage.getItem("rz_wr")||"";$("wr").oninput=e=>localStorage.setItem("rz_wr",e.target.value)}catch(e){}
+(function(){const d=$("dlg"),h=d.querySelector("h3");let sx,sy,ox,oy,on=0;h.style.cssText="cursor:move;touch-action:none;user-select:none";h.title="Geser untuk memindahkan";
+h.onpointerdown=e=>{const r=d.getBoundingClientRect();on=1;sx=e.clientX;sy=e.clientY;ox=r.left;oy=r.top;d.style.cssText="margin:0;right:auto;bottom:auto;left:"+ox+"px;top:"+oy+"px";h.setPointerCapture(e.pointerId)};
+h.onpointermove=e=>{if(on){d.style.left=Math.max(0,Math.min(innerWidth-80,ox+e.clientX-sx))+"px";d.style.top=Math.max(0,Math.min(innerHeight-50,oy+e.clientY-sy))+"px"}};h.onpointerup=()=>on=0})();
 applySet();kalk();loadLive(cur);
 </script>
 </body>

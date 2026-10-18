@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
   const iv = IV[req.query.tf];
   if (!iv) return res.status(400).json({ error: "Timeframe tidak valid" });
   try {
-    const u = `https://api.twelvedata.com/time_series?symbol=XAU%2FUSD&interval=${iv}&outputsize=60&apikey=${encodeURIComponent(key)}`;
+    const u = `https://api.twelvedata.com/time_series?symbol=XAU%2FUSD&interval=${iv}&outputsize=120&apikey=${encodeURIComponent(key)}`;
     const d = await (await fetch(u)).json();
     if (d.status === "error" || !Array.isArray(d.values))
       return res.status(502).json({ error: String(d.message || "Data tidak tersedia").split(key).join("***") });

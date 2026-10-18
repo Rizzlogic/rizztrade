@@ -8,3 +8,5 @@ Situs statis multi-halaman: index, grafik (mode fokus), belajar, alat, demo (gay
 
 ## Update situs
 Timpa file di GitHub (nama sama), commit. Vercel deploy ulang sendiri sekitar 1 menit.
+
+Halaman kuis: kuis.html (dibuka dari kartu di Belajar).
