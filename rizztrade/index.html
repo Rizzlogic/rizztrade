@@ -7,7 +7,7 @@
 <meta name="description" content="Belajar membaca candlestick XAUUSD dengan penjelasan sederhana dan analisis AI.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css"><script src="theme.js"></script>
 </head>
 <body>
 <header><div class="w"><div class="logo">RIZZ<i>TRADE</i></div>
@@ -22,7 +22,7 @@
 <div class="grid" id="chart">
   <div class="card">
     <div class="bar"><div><div class="mu" style="font-size:13px">XAUUSD · <span id="src">data contoh untuk belajar</span></div><div class="price" id="pr">–</div><div id="ch" style="font-size:14px;margin-top:4px"></div></div>
-    <div class="tf" id="tf"><button class="chip" data-n="M15">M15</button><button class="chip on" data-n="H1">H1</button><button class="chip" data-n="H4">H4</button><button class="chip" data-n="D1">D1</button></div></div>
+    <div class="tf" id="tf"><a class="chip" id="fk" href="grafik.html">⛶ Fokus</a><button class="chip" data-n="M15">M15</button><button class="chip on" data-n="H1">H1</button><button class="chip" data-n="H4">H4</button><button class="chip" data-n="D1">D1</button></div></div>
     <canvas id="cv" aria-label="Grafik candlestick XAUUSD"></canvas>
     <div class="leg"><span style="--c:var(--up)">Hijau: harga naik</span><span style="--c:var(--dn)">Merah: harga turun</span><span style="--c:var(--ac)">Garis emas: rata-rata 20 candle</span><span style="--c:var(--lv)">Putus-putus: support dan resistance</span></div>
     <div class="info" id="info"></div>
@@ -61,7 +61,7 @@
 <dialog id="dlg"><h3>Pengaturan</h3>
 <label for="sLv">Level support/resistance (pisahkan dengan koma)</label><input id="sLv" type="text">
 <div class="f2"><div><label for="sB">Modal awal ($)</label><input id="sB" type="number"></div><div><label for="sR">Risiko awal (%)</label><input id="sR" type="number" step="0.1"></div>
-<div><label for="sT">Timeframe awal</label><select id="sT"><option>M15</option><option>H1</option><option>H4</option><option>D1</option></select></div><div><label for="sTh">Tema</label><select id="sTh"><option value="">Ikuti perangkat</option><option value="light">Terang</option><option value="dark">Gelap</option></select></div></div>
+<div><label for="sT">Timeframe awal</label><select id="sT"><option>M15</option><option>H1</option><option>H4</option><option>D1</option></select></div><div><label for="sTh">Tema</label><select id="sTh"><option value="">Ikuti perangkat</option><option value="zamrud">Zamrud Emas</option><option value="gading">Gading Emas</option><option value="hitam">Hitam Emas</option><option value="biru">Biru Malam Emas</option></select></div></div>
 <div style="display:flex;gap:8px;margin-top:18px"><button class="btn" id="sv">Simpan</button><button class="chip" id="sx">Reset</button><button class="chip" id="sc">Tutup</button></div>
 <div class="note">Pengaturan tersimpan di browser perangkat ini saja.</div></dialog>
 <script>
@@ -69,20 +69,18 @@ const $=i=>document.getElementById(i),cv=$("cv"),cx=cv.getContext("2d"),f=(n,d=2
 const LV=[4315,4205,4065,3970],TF={M15:[3,11],H1:[7,31],H4:[13,64],D1:[21,125]};
 const V=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
 /* tema */
-const root=document.documentElement;let th;try{th=localStorage.getItem("rz_th")}catch(e){}
-root.dataset.theme=th||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
-$("th").onclick=()=>{const n=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=n;try{localStorage.setItem("rz_th",n)}catch(e){}draw()};
+const root=document.documentElement;$("th").onclick=()=>{RZ.cycle();draw()};
 /* pengaturan (tersimpan di browser) */
 const DEF={lv:[4315,4205,4065,3970],b:5000,r:1,tf:"H1",th:""};let SET=Object.assign({},DEF);
 try{SET=Object.assign(SET,JSON.parse(localStorage.getItem("rz_set")||"{}"))}catch(e){}
 function applySet(){LV.length=0;LV.push(...SET.lv);$("kb").value=SET.b;$("kr").value=SET.r;cur=SET.tf;document.querySelectorAll("#tf button").forEach(b=>b.classList.toggle("on",b.dataset.n===cur));
-  root.dataset.theme=SET.th||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light")}
+  RZ.apply(SET.th)}
 $("gs").onclick=()=>{$("sLv").value=SET.lv.join(", ");$("sB").value=SET.b;$("sR").value=SET.r;$("sT").value=SET.tf;$("sTh").value=SET.th;$("dlg").showModal()};
 $("sc").onclick=()=>$("dlg").close();
 $("sv").onclick=()=>{const lv=$("sLv").value.split(",").map(Number).filter(v=>v>0&&isFinite(v));if(!lv.length){alert("Isi minimal satu level harga, mis. 4205, 4065");return}
   SET={lv,b:+$("sB").value||5000,r:+$("sR").value||1,tf:$("sT").value,th:$("sTh").value};try{localStorage.setItem("rz_set",JSON.stringify(SET))}catch(e){}
   applySet();kalk();if(!own)loadLive(cur);else draw();$("dlg").close()};
-$("sx").onclick=()=>{SET=Object.assign({},DEF);try{localStorage.removeItem("rz_set")}catch(e){}applySet();kalk();if(!own)loadLive(cur);else draw();$("dlg").close()};
+$("sx").onclick=()=>{SET=Object.assign({},DEF);try{localStorage.removeItem("rz_set");localStorage.removeItem("rz_th")}catch(e){}applySet();kalk();if(!own)loadLive(cur);else draw();$("dlg").close()};
 /* data */
 function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function demo(n){const [s,v]=TF[n],r=rng(s*977),a=[];let p=4178-(r()-.4)*60;for(let i=0;i<60;i++){const o=p,c=o+(r()-.5)*v*2.2;a.push({o,h:Math.max(o,c)+r()*v*.8,l:Math.min(o,c)-r()*v*.8,c});p=c}const k=4178-a[59].c;return a.map(x=>({o:x.o+k,h:x.h+k,l:x.l+k,c:x.c+k}))}
@@ -116,6 +114,7 @@ async function loadLive(n){$("src").textContent="memuat data…";
     live=true;$("src").textContent="data live "+n+" · candle terakhir "+d.last+" · "+d.source;setData(d.candles)}
   catch(e){live=false;$("src").textContent="data contoh (live belum aktif)";setData(demo(n))}}
 setInterval(()=>{if(!own&&live&&!document.hidden)loadLive(cur)},300000);
+$("fk").onclick=e=>{e.currentTarget.href="grafik.html?tf="+cur};
 /* kalkulator */
 function kalk(){const B=+$("kb").value,R=+$("kr").value,E=+$("ke").value,S=+$("ks").value,o=$("ko"),sd=E-S;
   if(!(E&&S)||sd<=0){o.innerHTML='<div class="note">Untuk Buy, stop loss harus di bawah entry.</div>';return}
