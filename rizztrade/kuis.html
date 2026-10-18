@@ -1,16 +1,56 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Kuis · RIZZTRADE</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><script src="theme.js"></script></head><body><script src="common.js"></script><main class="w page"><p><a class="chip" href="belajar.html">← Kembali ke Belajar</a></p><h1 style="margin-top:14px">Kuis cepat</h1><p class="mu">8 soal pilihan ganda. Tidak ada nilai yang disimpan, jadi santai saja.</p><div class="card" style="margin-top:20px"><div id="qz"></div></div></main><footer><div class="w">RIZZTRADE adalah alat belajar, bukan nasihat keuangan. Trading emas berisiko tinggi dan bisa merugikan modal Anda.</div></footer><script>const Q=[
-{q:"Candle berwarna hijau berarti apa?",o:["Harga tutup lebih tinggi dari harga buka","Harga pasti naik besok","Pasar sedang tutup"],a:0,e:"Hijau berarti harga tutup di atas harga buka dalam periode itu."},
-{q:"Ekor bawah candle sangat panjang. Artinya?",o:["Harga sempat jatuh, lalu dibeli kembali","Harga akan terus turun","Tidak ada artinya"],a:0,e:"Ekor panjang menunjukkan harga sempat ditolak di area itu."},
-{q:"Apa fungsi stop loss?",o:["Menjamin selalu untung","Membatasi kerugian otomatis","Menambah lot"],a:1,e:"Stop loss menutup posisi di batas rugi yang Anda tentukan sebelum masuk."},
-{q:"Risiko per trade yang umum disarankan untuk pemula?",o:["1–2% dari modal","20% dari modal","Semua modal agar cepat besar"],a:0,e:"Risiko kecil membuat Anda bisa bertahan saat kalah beruntun."},
-{q:"Modal Anda turun 50%. Berapa untung yang dibutuhkan untuk kembali ke modal awal?",o:["50%","75%","100%"],a:2,e:"Dari 50 kembali ke 100 berarti naik 100%. Rugi dalam itu mahal."},
-{q:"Modal $1.000, risiko 1% per trade. Rugi maksimal per trade?",o:["$1","$10","$100"],a:1,e:"1% dari $1.000 adalah $10."},
-{q:"Apa itu support?",o:["Area tempat harga sering memantul naik","Biaya dari broker","Jenis candle merah"],a:0,e:"Support adalah area harga sering tertahan jatuh. Tapi bisa tembus."},
-{q:"Apa itu revenge trading?",o:["Trading tenang sesuai rencana","Trading balas dendam setelah rugi, biasanya dengan lot besar","Trading memakai akun demo"],a:1,e:"Ini salah satu penyebab terbesar modal habis. Berhenti dulu setelah rugi beruntun."}];
-let qi=0,qs=0;const bt=(t,fn,c)=>{const b=document.createElement("button");b.className=c;b.textContent=t;b.onclick=fn;return b};
-function rq(){const b=document.getElementById("qz");b.replaceChildren();
-if(qi>=Q.length){const p=document.createElement("p");p.innerHTML='<b style="font-size:20px">Skor Anda: '+qs+" dari "+Q.length+"</b><br>"+(qs>=7?"Bagus sekali, dasarnya sudah kuat.":qs>=5?"Sudah baik. Baca ulang pelajaran yang terlewat.":"Tidak apa-apa. Baca pelajaran di atas lalu coba lagi.");const r=bt("Ulangi kuis",()=>{qi=0;qs=0;rq()},"btn");r.style.marginTop="10px";b.append(p,r);return}
-const q=Q[qi],h=document.createElement("p");h.innerHTML='<span class="mu">Soal '+(qi+1)+" dari "+Q.length+"</span><br><b>"+q.q+"</b>";b.append(h);
-let done=false;const ops=[],ex=document.createElement("div");ex.className="note";ex.style.fontSize="14px";const nx=bt(qi+1<Q.length?"Soal berikutnya":"Lihat skor",()=>{qi++;rq()},"btn");nx.style.display="none";nx.style.marginTop="10px";
-q.o.forEach((t,k)=>{const o=bt(t,()=>{if(done)return;done=true;if(k===q.a){qs++;o.classList.add("ok")}else{o.classList.add("no");ops[q.a].classList.add("ok")}ex.textContent=(k===q.a?"Benar. ":"Belum tepat. ")+q.e;nx.style.display="inline-block"},"opt");ops.push(o);b.append(o)});b.append(ex,nx)}
-rq();</script></body></html>
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Kuis · RIZZTRADE</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><script src="theme.js"></script></head><body><script src="common.js"></script><main class="w page"><p><a class="chip" href="belajar.html">← Kembali ke Belajar</a></p><h1 style="margin-top:14px">Kuis bertingkat</h1><p class="mu">Selesaikan level, kumpulkan XP, dan naikkan peringkat. Tiap level punya 3 nyawa. Progres tersimpan di browser ini.</p><div class="card" style="margin-top:20px"><div id="qz"></div></div></main><footer><div class="w">RIZZTRADE adalah alat belajar, bukan nasihat keuangan. Trading emas berisiko tinggi dan bisa merugikan modal Anda.</div></footer><script>const $=i=>document.getElementById(i),box=$("qz");
+const L=[
+{n:"Dasar Candle",d:"Baca bentuk candle",q:[
+{v:[4150,4170,4145,4165],q:"Candle ini hijau. Artinya apa?",o:["Harga tutup lebih tinggi dari harga buka","Harga pasti naik besok","Pasar sedang tutup"],a:0,e:"Hijau berarti harga tutup berada di atas harga buka."},
+{v:[4160,4172,4150,4161],q:"Badannya sangat kecil dengan ekor di kedua sisi. Namanya?",o:["Doji","Engulfing","Hammer"],a:0,e:"Doji: pembeli dan penjual seimbang, pasar sedang ragu."},
+{v:[4162,4166,4140,4165],q:"Ekor bawah sangat panjang. Artinya?",o:["Harga sempat jatuh, lalu dibeli kembali","Harga pasti terus turun","Tidak ada artinya"],a:0,e:"Ekor panjang menunjukkan harga ditolak di area bawah."},
+{q:"Apa yang disebut badan candle?",o:["Jarak harga buka ke harga tutup","Harga tertinggi hari itu","Jumlah transaksi"],a:0,e:"Badan adalah jarak buka ke tutup. Ekor adalah rentang tertinggi dan terendah."},
+{v:[4170,4172,4148,4150],q:"Badan merah besar tanpa ekor panjang menandakan?",o:["Penjual mendominasi","Pembeli mendominasi","Pasar libur"],a:0,e:"Harga turun kuat dari buka ke tutup, tanda penjual dominan."}]},
+{n:"Support dan Resistance",d:"Level penting di grafik",q:[
+{q:"Apa itu support?",o:["Area tempat harga sering memantul naik","Biaya dari broker","Jenis candle merah"],a:0,e:"Support adalah area harga sering tertahan jatuh."},
+{q:"Harga berulang kali memantul naik dari 4,065. Level itu kemungkinan?",o:["Support","Resistance","Spread"],a:0,e:"Pantulan berulang dari bawah menandakan support."},
+{q:"Apakah level support pasti menahan harga?",o:["Tidak, bisa saja tembus","Ya, selalu","Hanya di hari Jumat"],a:0,e:"Level hanya area probabilitas, bukan tembok."},
+{q:"Kenapa stop loss tetap wajib walau ada support?",o:["Karena support bisa jebol","Supaya broker senang","Tidak wajib"],a:0,e:"Stop loss melindungi Anda saat level gagal menahan."},
+{q:"Harga menembus resistance dan bertahan di atasnya. Resistance lama sering menjadi?",o:["Support","Spread","Lot"],a:0,e:"Level yang jebol sering berganti peran."}]},
+{n:"Risiko dan Lot",d:"Hitung sebelum masuk",q:[
+{q:"Risiko per trade yang umum disarankan untuk pemula?",o:["1–2% dari modal","20% dari modal","Seluruh modal"],a:0,e:"Risiko kecil membuat Anda bertahan saat kalah beruntun."},
+{q:"Modal $1.000, risiko 1%. Rugi maksimal per trade?",o:["$10","$1","$100"],a:0,e:"1% dari $1.000 adalah $10."},
+{q:"Modal $2.000, risiko 2%. Rugi maksimal per trade?",o:["$40","$4","$400"],a:0,e:"2% dari $2.000 adalah $40."},
+{q:"Di emas, 1 lot = 100 oz. Harga bergerak $1, untung/rugi 1 lot?",o:["$100","$1","$10"],a:0,e:"100 oz dikali $1 sama dengan $100."},
+{q:"Modal turun 50%. Untung yang dibutuhkan untuk kembali ke modal awal?",o:["100%","50%","75%"],a:0,e:"Dari 50 kembali ke 100 berarti naik 100%."},
+{q:"Kapan stop loss sebaiknya dipasang?",o:["Sebelum atau saat entry","Setelah rugi besar","Tidak perlu"],a:0,e:"Tentukan batas rugi sebelum masuk, bukan sesudahnya."}]},
+{n:"Psikologi Trader",d:"Kendalikan emosi",q:[
+{q:"Apa itu revenge trading?",o:["Trading balas dendam setelah rugi, biasanya lot besar","Trading tenang sesuai rencana","Trading di akun demo"],a:0,e:"Ini salah satu penyebab terbesar modal habis."},
+{q:"Rugi tiga kali beruntun. Langkah terbaik?",o:["Berhenti sejenak dan evaluasi","Gandakan lot","Hapus stop loss"],a:0,e:"Istirahat mencegah keputusan emosional."},
+{q:"Menggeser stop loss makin jauh saat harga mendekat. Dampaknya?",o:["Berbahaya, kerugian bisa jauh lebih besar","Aman","Menambah untung"],a:0,e:"Stop loss ada untuk dipatuhi, bukan digeser karena berharap."},
+{q:"Akun demo paling berguna untuk?",o:["Latihan tanpa risiko uang asli","Menjamin untung di akun asli","Mengganti belajar"],a:0,e:"Demo melatih mekanik dan disiplin, tapi emosinya beda dengan uang asli."},
+{q:"Apa itu overtrading?",o:["Terlalu sering trade tanpa setup jelas","Trading dengan stop loss","Trading sekali seminggu"],a:0,e:"Makin sering trade tanpa alasan, makin banyak biaya dan salah langkah."}]},
+{n:"Tantangan Akhir",d:"8 soal acak dari semua level",boss:1}];
+const RK=[[0,"Pemula"],[50,"Pengamat"],[120,"Analis Muda"],[220,"Trader Disiplin"],[350,"Master Candle"]];
+let P={xp:0,st:[0,0,0,0,0]},S;try{P=Object.assign(P,JSON.parse(localStorage.getItem("rz_quiz")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("rz_quiz",JSON.stringify(P))}catch(e){}},rk=()=>{let r=0;RK.forEach((x,i)=>{if(P.xp>=x[0])r=i});return r},
+el=h=>{const d=document.createElement("div");d.innerHTML=h;return d},
+shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a},
+bt=(t,fn,c)=>{const b=document.createElement("button");b.className=c;b.textContent=t;b.onclick=fn;return b},
+hs=h=>"♥".repeat(h)+"♡".repeat(3-h);
+function cs(v){const[o,h,l,c]=v,lo=Math.min(l,o,c),hi=Math.max(h,o,c),Y=x=>8+(hi-x)/(hi-lo)*104,col=c>=o?"var(--up)":"var(--dn)";return`<svg width="90" height="120" viewBox="0 0 90 120" aria-hidden="true"><line x1="45" x2="45" y1="${Y(h)}" y2="${Y(l)}" stroke="${col}" stroke-width="3"/><rect x="29" y="${Y(Math.max(o,c))}" width="32" height="${Math.max(3,Y(Math.min(o,c))-Y(Math.max(o,c)))}" rx="2" fill="${col}"/></svg>`}
+function conf(){for(let i=0;i<44;i++){const s=document.createElement("i");s.className="cf";s.style.cssText=`left:${Math.random()*100}vw;background:${["var(--ac)","var(--up)","var(--dn)","var(--tx)"][i%4]};animation-delay:${Math.random()*.6}s;animation-duration:${1.6+Math.random()*1.4}s`;document.body.append(s);setTimeout(()=>s.remove(),3600)}}
+const openL=i=>i===0||(i<4?P.st[i-1]>0:P.st.slice(0,4).every(x=>x>0));
+function map(){const r=rk(),nx=RK[r+1],lo=RK[r][0],pc=nx?Math.round((P.xp-lo)/(nx[0]-lo)*100):100;
+box.replaceChildren(el(`<div class="lm-h"><div><div class="mu" style="font-size:13px">Peringkat Anda</div><b style="font-size:26px">${RK[r][1]}</b></div><div style="flex:1;min-width:200px"><div class="mu" style="display:flex;justify-content:space-between;font-size:13px"><span>${P.xp} XP</span><span>${nx?"Berikutnya: "+nx[1]+" ("+nx[0]+" XP)":"Peringkat tertinggi"}</span></div><div class="meter"><i style="width:${pc}%"></i></div></div></div>`));
+const g=document.createElement("div");g.className="lm";
+L.forEach((l,i)=>{const o=openL(i),b=document.createElement("button");b.className="lc";b.disabled=!o;b.innerHTML=`<span class="lv">${l.boss?"★":i+1}</span><b>${l.n}</b><span class="mu" style="font-size:13px">${o?l.d:"Selesaikan level sebelumnya"}</span><span class="stars">${"★".repeat(P.st[i])+"☆".repeat(3-P.st[i])}</span>`;b.onclick=()=>start(i);g.append(b)});
+const rs=bt("Reset progres",()=>{if(confirm("Hapus semua progres kuis?")){P={xp:0,st:[0,0,0,0,0]};save();map()}},"chip");rs.style.marginTop="16px";box.append(g,rs)}
+function start(i){const l=L[i];let qs=l.boss?shuf(L.slice(0,4).flatMap(x=>x.q)).slice(0,8):shuf(l.q);S={i,qs,k:0,h:3,st:0,gain:0};ask()}
+function ask(){const q=S.qs[S.k],o=shuf(q.o.map((t,j)=>({t,c:j===q.a}))),ps=[];let done=0;
+box.replaceChildren(el(`<div class="qb"><span class="mu">Soal ${S.k+1} dari ${S.qs.length}</span><span class="hrt" id="hr">${hs(S.h)}</span><span class="mu">${S.st>=3?"Beruntun x"+S.st:""}</span></div><div class="meter"><i style="width:${S.k/S.qs.length*100}%"></i></div>${q.v?'<div style="text-align:center;margin:10px 0">'+cs(q.v)+"</div>":""}<p style="margin:10px 0"><b>${q.q}</b></p>`));
+const ex=document.createElement("div");ex.className="note";ex.style.fontSize="14px";
+const nx=bt("Lanjut",()=>{S.k++;if(S.h<=0||S.k>=S.qs.length)end();else ask()},"btn");nx.style.cssText="display:none;margin-top:10px";
+o.forEach(x=>{const b=bt(x.t,()=>{if(done)return;done=1;
+if(x.c){S.st++;S.gain+=10+(S.st>=3?5:0);b.classList.add("ok");ex.textContent="Benar! "+q.e}
+else{S.st=0;S.h--;b.classList.add("no","shake");ps.find(z=>z.x.c).b.classList.add("ok");ex.textContent="Belum tepat. "+q.e;$("hr").textContent=hs(S.h)}
+nx.style.display="inline-block"},"opt");ps.push({x,b});box.append(b)});box.append(ex,nx)}
+function end(){const win=S.h>0,stars=win?S.h:0,first=win&&P.st[S.i]===0,r0=rk();let xp=S.gain;if(win){xp+=stars*5+(first?20:0);if(stars>P.st[S.i])P.st[S.i]=stars}P.xp+=xp;save();const up=rk()>r0;
+box.replaceChildren(el(`<div style="text-align:center;padding:10px 0"><div class="stars" style="font-size:44px">${win?"★".repeat(stars)+"☆".repeat(3-stars):"✕"}</div><b style="font-size:26px">${win?(L[S.i].boss?"Tantangan selesai!":"Level selesai!"):"Nyawa habis"}</b><p class="mu">${win?"Nyawa tersisa "+S.h+" dari 3.":"Tidak apa-apa. Baca penjelasannya lalu coba lagi."}</p><div class="row"><span>XP didapat</span><b class="up">+${xp}</b></div>${first?'<div class="note">Bonus level pertama kali: +20 XP</div>':""}${up?'<div class="note" style="font-size:15px">Naik peringkat: <b style="color:var(--ac)">'+RK[rk()][1]+"</b></div>":""}</div>`));
+const a=document.createElement("div");a.style.cssText="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px";a.append(bt("Coba lagi",()=>start(S.i),"chip"),bt("Peta level",map,"btn"));box.append(a);if(win&&(stars===3||L[S.i].boss))conf()}
+map();</script></body></html>
